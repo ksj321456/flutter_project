@@ -33,6 +33,11 @@ public class User {
     private List<String> date;
     private List<String> time;
     private List<String> distance;
+    // 체중감소
+    private boolean loseWeight;
+    // 근육증가
+    private boolean increaseMuscle;
+    private String BMI;
 
     public static User toEntity(UserDTO userDTO) {
         return User.builder()
@@ -50,6 +55,9 @@ public class User {
                 .date(userDTO.getDate())
                 .time(userDTO.getTime())
                 .distance(userDTO.getDistance())
+                .loseWeight(userDTO.isLoseWeight())
+                .increaseMuscle(userDTO.isIncreaseMuscle())
+                .BMI(userDTO.getBMI())
                 .build();
     }
 }

@@ -30,6 +30,11 @@ public class UserDTO {
     private List<String> date;
     private List<String> time;
     private List<String> distance;
+    // 체중감소
+    private boolean loseWeight;
+    // 근육증가
+    private boolean increaseMuscle;
+    private String BMI;
 
     public static UserDTO toDTO(User user) {
         return UserDTO.builder()
@@ -47,6 +52,9 @@ public class UserDTO {
                 .date(user.getDate())
                 .time(user.getTime())
                 .distance(user.getDistance())
+                .loseWeight(user.isLoseWeight())
+                .increaseMuscle(user.isIncreaseMuscle())
+                .BMI(user.getBMI())
                 .build();
     }
 }
