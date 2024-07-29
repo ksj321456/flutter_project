@@ -60,4 +60,26 @@ public class User {
                 .BMI(userDTO.getBMI())
                 .build();
     }
+
+    public static UserDTO toDTO(UserDTO userDTO) {
+        return UserDTO.builder()
+                .id(userDTO.getId())
+                .userId(userDTO.getUserId())
+                .password(userDTO.getPassword())
+                .name(userDTO.getName())
+                .height(userDTO.getHeight())
+                .weight(userDTO.getWeight())
+                .age(userDTO.getAge())
+                .sex(userDTO.getSex())
+                .nickname(userDTO.getNickname())
+                .boardList(userDTO.getBoardList())
+                .record(userDTO.getRecord())
+                .date(userDTO.getDate())
+                .time(userDTO.getTime())
+                .distance(userDTO.getDistance())
+                .loseWeight(userDTO.isLoseWeight())
+                .increaseMuscle(userDTO.isIncreaseMuscle())
+                .BMI(userDTO.getBMI())
+                .build();
+    }
 }

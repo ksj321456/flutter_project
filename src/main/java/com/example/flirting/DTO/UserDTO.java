@@ -57,4 +57,26 @@ public class UserDTO {
                 .BMI(user.getBMI())
                 .build();
     }
+
+    public User toEntity() {
+        User user = new User();
+        user.setId(this.id);
+        user.setUserId(this.userId);
+        user.setPassword(this.password);
+        user.setName(this.name);
+        user.setHeight(this.height);
+        user.setWeight(this.weight);
+        user.setAge(this.age);
+        user.setSex(this.sex);
+        user.setNickname(this.nickname);
+        user.setBoardList(this.boardList);
+        user.setRecord(this.record);
+        user.setDate(this.date);
+        user.setTime(this.time);
+        user.setDistance(this.distance);
+        user.setLoseWeight(this.loseWeight);
+        user.setIncreaseMuscle(this.increaseMuscle);
+        user.setBMI(this.BMI);
+        return user;
+    }
 }
