@@ -162,7 +162,7 @@ enum DrinkOrSmoking { Drink, Smoking, Both, None }
 
 enum Meal { LessThanTwo, TwoToThree, ThreeToFour, OverFour }
 
-enum ExercisePerWeek { LessThanOne, OneToTwo, TwoToThree, OverThree }
+enum ExercisePerWeek { LessThanOne, TwoToThree, OverThree }
 
 enum ExerciseTime { LessThanThirty, ThirtyToSixty, SixtyToNinety, OverNinety }
 
@@ -401,16 +401,7 @@ class _LosingWeightWidgetState extends State<LosingWeightWidget> {
                     });
                   },
                 ),
-                RadioListTile(
-                  title: const Text('1~2회'),
-                  value: ExercisePerWeek.OneToTwo,
-                  groupValue: _exercisePerWeek,
-                  onChanged: (value) {
-                    setState(() {
-                      _exercisePerWeek = value!;
-                    });
-                  },
-                ),
+
                 RadioListTile(
                   title: const Text('2~3회'),
                   value: ExercisePerWeek.TwoToThree,
@@ -422,7 +413,7 @@ class _LosingWeightWidgetState extends State<LosingWeightWidget> {
                   },
                 ),
                 RadioListTile(
-                  title: const Text('3회 이상'),
+                  title: const Text('4회 이상'),
                   value: ExercisePerWeek.OverThree,
                   groupValue: _exercisePerWeek,
                   onChanged: (value) {
@@ -592,6 +583,35 @@ class _LosingWeightWidgetState extends State<LosingWeightWidget> {
                     });
                   },
                 ),
+                 TextButton(
+                      onPressed: () {
+                        setState(() {
+                          if (_purpose == Purpose.LosingWeight) {
+                            // LosingWeight에 해당하는 위젯을 호출
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LosingWeightWidget()),
+                            );
+                          } else if (_purpose == Purpose.BuildingMuscle) {
+                            // BuildingMuscle에 해당하는 위젯을 호출
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BuildingMuscleWidget()),
+                            );
+                          } else if (_purpose == Purpose.GainingWeight) {
+                            // GainingWeight에 해당하는 위젯을 호출
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => GainingWeightWidget()),
+                            );
+                          }
+                        });
+                      },
+                      child: const Text('제출'),
+                    ),
               ]
             ],
           ),
@@ -606,14 +626,36 @@ class BuildingMuscleWidget extends StatefulWidget {
   _BuildingMuscleWidgetState createState() => _BuildingMuscleWidgetState();
 }
 
+enum ExerciseIntensity { Low, Medium, High }
+
+enum ProteinIntakeRoute {
+  meat,
+  fish,
+  dairy,
+  vegetableProtein,
+  proteinPowder,
+  etc
+}
+
 class _BuildingMuscleWidgetState extends State<BuildingMuscleWidget> {
   bool _isCheckedChest = false;
-  // bool _isCheckedBack = false;
-  // bool _isCheckedShoulder = false;
-  // bool _isCheckedArm = false;
-  // bool _isCheckedLeg = false;
-  // bool _isCheckedCore = false;
-  // bool _isCheckedEtc = false;
+  bool _isCheckedBack = false;
+  bool _isCheckedShoulder = false;
+  bool _isCheckedArm = false;
+  bool _isCheckedLeg = false;
+  bool _isCheckedCore = false;
+  bool _isCheckedEtc = false;
+  Meal _meal = Meal.LessThanTwo;
+  ExercisePerWeek _exercisePerWeek = ExercisePerWeek.LessThanOne;
+  ExerciseTime _exerciseTime = ExerciseTime.LessThanThirty;
+  Motivation _motivation = Motivation.Health;
+  bool _isCheckedmeat = false;
+  bool _isCheckedfish = false;
+  bool _isCheckeddairy = false;
+  bool _isCheckedvegetableProtein = false;
+  bool _isCheckedproteinPowder = false;
+  bool _isCheckedetc = false;
+  ExerciseIntensity _exerciseIntensity = ExerciseIntensity.Low;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -677,14 +719,388 @@ class _BuildingMuscleWidgetState extends State<BuildingMuscleWidget> {
                     child: const Text('근육 증가를 원하는 부위는 어디인가요?'),
                   ),
                 ),
-                // Row(
-                //   Checkbox(value: _isCheckedChest, onChanged: (value){
-                //     setState(() {
-                //       _isCheckedChest = value!;
-                //     });
-                //   }),
-
-                // )
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedChest,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedChest = value!;
+                          });
+                        }),
+                    Text("가슴")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedBack,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedBack = value!;
+                          });
+                        }),
+                    Text("등")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedShoulder,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedShoulder = value!;
+                          });
+                        }),
+                    Text("어깨")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedArm,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedArm = value!;
+                          });
+                        }),
+                    Text("팔")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedLeg,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedLeg = value!;
+                          });
+                        }),
+                    Text("다리")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedCore,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedCore = value!;
+                          });
+                        }),
+                    Text("코어")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedEtc,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedEtc = value!;
+                          });
+                        }),
+                    Text("기타")
+                  ],
+                ),
+                ListTile(
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: const Text('당신은 일주일에 운동을 몇 번정도 하시나요?'),
+                  ),
+                ),
+                RadioListTile(
+                  title: const Text('안한다'),
+                  value: ExercisePerWeek.LessThanOne,
+                  groupValue: _exercisePerWeek,
+                  onChanged: (value) {
+                    setState(() {
+                      _exercisePerWeek = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('2~3회'),
+                  value: ExercisePerWeek.TwoToThree,
+                  groupValue: _exercisePerWeek,
+                  onChanged: (value) {
+                    setState(() {
+                      _exercisePerWeek = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('4회 이상'),
+                  value: ExercisePerWeek.OverThree,
+                  groupValue: _exercisePerWeek,
+                  onChanged: (value) {
+                    setState(() {
+                      _exercisePerWeek = value!;
+                    });
+                  },
+                ),
+                ListTile(
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: const Text('하루 평균 운동 시간은 어떻게 되나요?'),
+                  ),
+                ),
+                RadioListTile(
+                  title: const Text('30분 이하'),
+                  value: ExerciseTime.LessThanThirty,
+                  groupValue: _exerciseTime,
+                  onChanged: (value) {
+                    setState(() {
+                      _exerciseTime = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('30분 ~ 1시간'),
+                  value: ExerciseTime.ThirtyToSixty,
+                  groupValue: _exerciseTime,
+                  onChanged: (value) {
+                    setState(() {
+                      _exerciseTime = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('1시간 ~ 1시간 30분'),
+                  value: ExerciseTime.SixtyToNinety,
+                  groupValue: _exerciseTime,
+                  onChanged: (value) {
+                    setState(() {
+                      _exerciseTime = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('1시간 30분 이상'),
+                  value: ExerciseTime.OverNinety,
+                  groupValue: _exerciseTime,
+                  onChanged: (value) {
+                    setState(() {
+                      _exerciseTime = value!;
+                    });
+                  },
+                ),
+                ListTile(
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: const Text('하루에 몇 끼 식사를 하시나요?(간식 포함)'),
+                  ),
+                ),
+                RadioListTile(
+                  title: const Text('2끼 미만'),
+                  value: Meal.LessThanTwo,
+                  groupValue: _meal,
+                  onChanged: (value) {
+                    setState(() {
+                      _meal = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('2~3끼'),
+                  value: Meal.TwoToThree,
+                  groupValue: _meal,
+                  onChanged: (value) {
+                    setState(() {
+                      _meal = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('3~4끼'),
+                  value: Meal.ThreeToFour,
+                  groupValue: _meal,
+                  onChanged: (value) {
+                    setState(() {
+                      _meal = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('4끼 이상'),
+                  value: Meal.OverFour,
+                  groupValue: _meal,
+                  onChanged: (value) {
+                    setState(() {
+                      _meal = value!;
+                    });
+                  },
+                ),
+                ListTile(
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: const Text('근육 증가를 위해 당신은 어떤 종류의 단백질을 섭취하나요?'),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedmeat,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedmeat = value!;
+                          });
+                        }),
+                    Text("육류")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedfish,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedfish = value!;
+                          });
+                        }),
+                    Text("어류")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckeddairy,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckeddairy = value!;
+                          });
+                        }),
+                    Text("유제품류")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedvegetableProtein,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedvegetableProtein = value!;
+                          });
+                        }),
+                    Text("식물성 단백질")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedproteinPowder,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedproteinPowder = value!;
+                          });
+                        }),
+                    Text("단백질 보충제")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                        value: _isCheckedetc,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedetc = value!;
+                          });
+                        }),
+                    Text("기타")
+                  ],
+                ),
+                ListTile(
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: const Text('운동 강도는 어느 정도인가요?'),
+                  ),
+                ),
+                RadioListTile(
+                  title: const Text('낮음'),
+                  value: ExerciseIntensity.Low,
+                  groupValue: _exerciseIntensity,
+                  onChanged: (value) {
+                    setState(() {
+                      _exerciseIntensity = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('중간'),
+                  value: ExerciseIntensity.Medium,
+                  groupValue: _exerciseIntensity,
+                  onChanged: (value) {
+                    setState(() {
+                      _exerciseIntensity = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('높음'),
+                  value: ExerciseIntensity.High,
+                  groupValue: _exerciseIntensity,
+                  onChanged: (value) {
+                    setState(() {
+                      _exerciseIntensity = value!;
+                    });
+                  },
+                ),
+                ListTile(
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: const Text('운동을 하는 이유는 무엇인가요?'),
+                  ),
+                ),
+                RadioListTile(
+                  title: const Text('건강을 위해서'),
+                  value: Motivation.Health,
+                  groupValue: _motivation,
+                  onChanged: (value) {
+                    setState(() {
+                      _motivation = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('외모를 위해서'),
+                  value: Motivation.Appearance,
+                  groupValue: _motivation,
+                  onChanged: (value) {
+                    setState(() {
+                      _motivation = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('스트레스 해소를 위해서'),
+                  value: Motivation.Stress,
+                  groupValue: _motivation,
+                  onChanged: (value) {
+                    setState(() {
+                      _motivation = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('사회적 활동을 위해서'),
+                  value: Motivation.Social,
+                  groupValue: _motivation,
+                  onChanged: (value) {
+                    setState(() {
+                      _motivation = value!;
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('기타'),
+                  value: Motivation.etc,
+                  groupValue: _motivation,
+                  onChanged: (value) {
+                    setState(() {
+                      _motivation = value!;
+                    });
+                  },
+                ),
               ]
             ],
           ),
