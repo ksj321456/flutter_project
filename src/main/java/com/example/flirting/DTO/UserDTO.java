@@ -2,61 +2,39 @@ package com.example.flirting.DTO;
 
 import com.example.flirting.Domain.Board;
 import com.example.flirting.Domain.User;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDTO {
+public class UserDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Long id;
 
-    private String userId;
-    private String password;
-    private String name;
-    private String height;
-    private String weight;
-    private String age;
-    private String sex;
-    private String nickname;
-    private List<Board> boardList;
-    private List<String> record;
-    private List<String> date;
-    private List<String> time;
-    private List<String> distance;
-    // 체중감소
-    private boolean loseWeight;
-    // 근육증가
-    private boolean increaseMuscle;
-    private String BMI;
+    private String userId;      // 로그인 ID
+    private String password;    // 비밀번호
+    private String name;        // 이름
+    private String nickname;    // 닉네임
+    private String email;
 
-    public static UserDTO toDTO(User user) {
-        return UserDTO.builder()
-                .id(user.getId())
-                .userId(user.getUserId())
-                .password(user.getPassword())
-                .name(user.getName())
-                .height(user.getHeight())
-                .weight(user.getWeight())
-                .age(user.getAge())
-                .sex(user.getSex())
-                .nickname(user.getNickname())
-                .boardList(user.getBoardList())
-                .record(user.getRecord())
-                .date(user.getDate())
-                .time(user.getTime())
-                .distance(user.getDistance())
-                .loseWeight(user.isLoseWeight())
-                .increaseMuscle(user.isIncreaseMuscle())
-                .BMI(user.getBMI())
-                .build();
-    }
+    private List<Board> boardList;      // 작성한 글 리스트
+    private List<String> exerciseName;    // 운동 이름
+
+    private List<String> exerciseCount;    // 운동 횟수
+
+    private List<LocalDateTime> time;   // 운동한 날짜
+
+    // 회원가입 시 인증코드
+    private String code;
 
     public User toEntity() {
         User user = new User();
@@ -64,19 +42,13 @@ public class UserDTO {
         user.setUserId(this.userId);
         user.setPassword(this.password);
         user.setName(this.name);
-        user.setHeight(this.height);
-        user.setWeight(this.weight);
-        user.setAge(this.age);
-        user.setSex(this.sex);
         user.setNickname(this.nickname);
+        user.setEmail(this.email);
         user.setBoardList(this.boardList);
-        user.setRecord(this.record);
-        user.setDate(this.date);
+        user.setExerciseName(this.exerciseName);
+        user.setExerciseCount(this.exerciseCount);
         user.setTime(this.time);
-        user.setDistance(this.distance);
-        user.setLoseWeight(this.loseWeight);
-        user.setIncreaseMuscle(this.increaseMuscle);
-        user.setBMI(this.BMI);
+        user.setCode(this.code);
         return user;
     }
 }

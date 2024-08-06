@@ -1,6 +1,7 @@
 package com.example.flirting.Controller;
 
 import com.example.flirting.DTO.UserDTO;
+import com.example.flirting.Domain.User;
 import com.example.flirting.Service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Data
@@ -24,16 +22,28 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(UserDTO userDTO) {
+    public UserDTO signUp(UserDTO userDTO) {
         log.info("@@UserController@@ 회원가입");
         if(userService.isUserIdUsed(userDTO)) {
             log.info("UserID 이미 사용중");
-            return new ResponseEntity<>("UserID 이미 사용중", HttpStatus.CONFLICT);
+            return null;
         }
         else {
+            int num = userService.sendEmail(userDTO.getEmail());
+            log.info("@@UserController@@ 이메일 전송 성공");
+            log.info("@@UserController@@ " + userDTO.getEmail());
+            return userDTO;
+        }
+    }
+
+    @PostMapping("/signup/code")
+    public ResponseEntity<String> checkCode(UserDTO userDTO) {
+        if (userService.isCodeCorrect(userDTO.getCode())) {
+            log.info("@@UserController@@ 인증코드 일치");
             userService.saveUser(userDTO);
-            log.info("@@UserController@@ 회원가입 성공");
             return new ResponseEntity<>("회원가입 성공", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("코드 값 다름", HttpStatus.CONFLICT);
         }
     }
 
