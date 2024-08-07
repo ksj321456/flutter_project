@@ -1,6 +1,7 @@
 package com.example.flirting.DTO;
 
 import com.example.flirting.Domain.Board;
+import com.example.flirting.Domain.Exercise;
 import com.example.flirting.Domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -27,11 +29,7 @@ public class UserDTO implements Serializable {
     private String email;
 
     private List<Board> boardList;      // 작성한 글 리스트
-    private List<String> exerciseName;    // 운동 이름
-
-    private List<String> exerciseCount;    // 운동 횟수
-
-    private List<LocalDateTime> time;   // 운동한 날짜
+    private List<Exercise> exerciseRoutine;    // 운동 루틴
 
     // 회원가입 시 인증코드
     private String code;
@@ -45,9 +43,7 @@ public class UserDTO implements Serializable {
         user.setNickname(this.nickname);
         user.setEmail(this.email);
         user.setBoardList(this.boardList);
-        user.setExerciseName(this.exerciseName);
-        user.setExerciseCount(this.exerciseCount);
-        user.setTime(this.time);
+        user.setExerciseRoutine(this.exerciseRoutine);
         user.setCode(this.code);
         return user;
     }

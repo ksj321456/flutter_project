@@ -1,6 +1,8 @@
 package com.example.flirting.Service;
 
+import com.example.flirting.DTO.ExerciseDTO;
 import com.example.flirting.DTO.UserDTO;
+import com.example.flirting.Domain.Exercise;
 import com.example.flirting.Domain.User;
 import com.example.flirting.Repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
@@ -108,6 +110,31 @@ public class UserService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public User saveHealthRoutine(UserDTO userDTO) {
+        Optional<User> user = userRepository.findByUserId(userDTO.getUserId());
+        log.info("@@UserService@@ " + user.toString());
+        if(user.isPresent()) {
+            log.info("@@UserService@@ ID 있으므로 운동루틴 저장 시작");
+            User user1 = user.get();
+
+            // userDTO 안에 있는 ExerciseRoutine을 user1 객체에 넣고 ExerciseRoutine 내에 user 필드에 user1 매핑
+            log.info("@@UserService@@ userDTO.getExerciseRoutine() => " + userDTO.getExerciseRoutine());
+
+            for(Exercise exercise : userDTO.getExerciseRoutine()) {
+                Exercise exercise1 = new Exercise();
+                exercise1.setUser(user1);
+                exercise1.setExerciseName(exercise.getExerciseName());
+                exercise1.setExerciseCount(exercise.getExerciseCount());
+                user1.getExerciseRoutine().add(exercise1);
+            }
+
+            return userRepository.save(user1);
+        } else {
+            log.info("@@UserService@@ 해당 ID 없으므로 운동루틴 저장 실패");
+            return null;
         }
     }
 

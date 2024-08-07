@@ -61,4 +61,19 @@ public class UserController {
             return new ResponseEntity<>("로그인 실패", HttpStatus.CONFLICT);
         }
     }
+
+    @PostMapping("/health_routine")
+    public ResponseEntity<String> healthRoutine(@RequestBody UserDTO userDTO) {
+        log.info("@@UserController userId는 " + userDTO.getUserId());
+        log.info("@@UserController ExerciseRoutine은 " + userDTO.getExerciseRoutine());
+        log.info("@@UserController@@ 운동기록 시작");
+        User user = userService.saveHealthRoutine(userDTO);
+        if(user != null) {
+            log.info("@@UserController@@ 운동루틴 저장 완료");
+            return new ResponseEntity<>("운동루틴 저장 완료", HttpStatus.OK);
+        } else {
+            log.info("@@UserController@@ 운동루틴 저장 실패");
+            return  new ResponseEntity<>("운동루틴 저장 실패", HttpStatus.CONFLICT);
+        }
+    }
 }

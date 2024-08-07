@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,14 +34,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> boardList;      // 작성한 글 리스트
 
-    @ElementCollection
-    private List<String> exerciseName;    // 운동 이름
-
-    @ElementCollection
-    private List<String> exerciseCount;    // 운동 횟수
-
-    @ElementCollection
-    private List<LocalDateTime> time;   // 운동한 날짜
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Exercise> exerciseRoutine;    // 운동 루틴
 
     // 회원가입 시 인증번호
     private String code;
@@ -54,9 +49,7 @@ public class User implements Serializable {
                 .nickname(user.getNickname())
                 .email(user.getEmail())
                 .boardList(user.getBoardList())
-                .exerciseName(user.getExerciseName())
-                .exerciseCount(user.getExerciseCount())
-                .time(user.getTime())
+                .exerciseRoutine(user.getExerciseRoutine())
                 .code(user.getCode())
                 .build();
     }
