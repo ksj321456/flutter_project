@@ -15,10 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Data
@@ -154,7 +151,10 @@ public class UserService {
             Optional<List<Exercise>> exerciseList = exerciseRepository.findByUserId(user.getId());
             if(exerciseList.isPresent()) {
                 log.info("@@UserService@@ user의 id에 해당하는 Exercise 리스트 Found");
-                map.put(user.getNickname(), exerciseList.get());
+                List<Exercise> listExercise = exerciseList.get();
+                // 역정렬해서 최근 순으로 리턴
+                Collections.reverse(listExercise);
+                map.put(user.getNickname(), listExercise);
                 return map;
             }
             else {
