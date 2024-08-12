@@ -4,6 +4,7 @@ import com.example.flirting.DTO.ExerciseDTO;
 import com.example.flirting.DTO.UserDTO;
 import com.example.flirting.Domain.Exercise;
 import com.example.flirting.Domain.User;
+import com.example.flirting.Repository.ExerciseRepository;
 import com.example.flirting.Repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -23,6 +27,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ExerciseRepository exerciseRepository;
     private final JavaMailSender javaMailSender;
     private static final String senderEmail= "seongjaekim3@gmail.com";
     private static int number;  // 랜덤 인증 코드
@@ -134,6 +139,30 @@ public class UserService {
             return userRepository.save(user1);
         } else {
             log.info("@@UserService@@ 해당 ID 없으므로 운동루틴 저장 실패");
+            return null;
+        }
+    }
+    // 홈 화면을 위한 유저 정보 주기 => 닉네임과 해당 닉네임과 매핑되는 운동루틴정보
+    public Map<String, List<Exercise>> showHome(String userId) {
+        Optional<User> userOptional = userRepository.findByUserId(userId);
+
+        if(userOptional.isPresent()) {
+            log.info("@@UserService@@ userId에 해당하는 User 객체 Found");
+            Map<String, List<Exercise>> map = new HashMap<>();
+            User user = userOptional.get();
+            log.info("@@UserService@@ user의 id는 " + user.getId());
+            Optional<List<Exercise>> exerciseList = exerciseRepository.findByUserId(user.getId());
+            if(exerciseList.isPresent()) {
+                log.info("@@UserService@@ user의 id에 해당하는 Exercise 리스트 Found");
+                map.put(user.getNickname(), exerciseList.get());
+                return map;
+            }
+            else {
+                log.info("@@UserService@@ user의 id에 해당하는 Exercise 리스트 Not Found");
+                return null;
+            }
+        } else {
+            log.info("@@UserService@@ userId에 해당하는 User 객체 Not Found");
             return null;
         }
     }

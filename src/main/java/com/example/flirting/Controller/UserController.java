@@ -1,6 +1,7 @@
 package com.example.flirting.Controller;
 
 import com.example.flirting.DTO.UserDTO;
+import com.example.flirting.Domain.Exercise;
 import com.example.flirting.Domain.User;
 import com.example.flirting.Service.UserService;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @Data
@@ -74,6 +79,19 @@ public class UserController {
         } else {
             log.info("@@UserController@@ 운동루틴 저장 실패");
             return  new ResponseEntity<>("운동루틴 저장 실패", HttpStatus.CONFLICT);
+        }
+    }
+
+    // 홈 화면에 데이터 주기 => 이름, 운동루틴 정보
+    @GetMapping("/home/{id}")
+    public Map<String, List<Exercise>> home(@PathVariable("id") String userId) {
+        log.info("@@UserController@@ 홈 화면 userId는 " + userId);
+        Map<String, List<Exercise>> map = userService.showHome(userId);
+        if(map != null) {
+            return map;
+        } else {
+            log.info("@@UserController@@ map은 null값");
+            return null;
         }
     }
 }
