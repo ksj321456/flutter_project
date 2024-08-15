@@ -34,6 +34,9 @@ public class UserDTO implements Serializable {
     // 회원가입 시 인증코드
     private String code;
 
+    // 게시글 작성 내용
+    private String content;
+
     public User toEntity() {
         User user = new User();
         user.setId(this.id);
